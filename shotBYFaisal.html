@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Shot_BY_Faisal Booking Site</title>
+  <meta name="description" content="Book a photoshoot with Shot_By_faisal - professional photographer"/>
+  <style>
+    /* Simple modern reset + styles */
+    :root{--accent:#0ea5a4;--bg:#0f172a;--card:#0b1220;--muted:#94a3b8;--glass: rgba(255,255,255,0.03)}
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;color:#e6eef8;background:linear-gradient(180deg,#071023 0%, #071428 100%)}
+    a{color:inherit}
+    .container{max-width:1100px;margin:32px auto;padding:20px}
+    header{display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:52px;height:52px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#7dd3fc);display:flex;align-items:center;justify-content:center;color:#042028;font-weight:700}
+    h1{margin:0;font-size:20px}
+    p.lead{margin:6px 0 0;color:var(--muted)}
+
+    .grid{display:grid;grid-template-columns:1fr 420px;gap:24px;margin-top:20px}
+    @media (max-width:900px){.grid{grid-template-columns:1fr} .right-col{order:2}}
+
+    .card{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 6px 18px rgba(2,6,23,0.6);}
+    .hero{padding:28px;display:flex;flex-direction:column;gap:12px}
+
+    .gallery{display:flex;gap:8px;flex-wrap:wrap}
+    .gallery img{width:calc(33.333% - 6px);height:120px;object-fit:cover;border-radius:8px}
+    @media (max-width:600px){.gallery img{width:calc(50% - 6px)}}
+
+    label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+    input,select,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#e6eef8}
+    textarea{min-height:100px}
+    .row{display:flex;gap:12px}
+    .row > *{flex:1}
+
+    .btn{display:inline-block;padding:10px 14px;border-radius:10px;background:var(--accent);color:#042028;font-weight:600;border:none;cursor:pointer}
+    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+
+    .small{font-size:13px;color:var(--muted)}
+    .muted{color:var(--muted)}
+
+    .service-list{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+    .service{background:var(--glass);padding:8px 10px;border-radius:8px;font-size:14px}
+
+    footer{text-align:center;color:var(--muted);margin-top:18px;font-size:13px}
+
+    /* bookings list */
+    .booking-item{padding:10px;border-radius:8px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));margin-bottom:10px}
+    .booking-meta{display:flex;justify-content:space-between;font-size:13px;color:var(--muted)}
+.container {max-width:1100px; margin:0 auto; padding:20px;}
+a {color:#0ea5a4; text-decoration:none;}
+.social-links a {margin-right:15px; font-size:18px;}
+.social-links h3 {margin-bottom:10px;}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo">SBF</div>
+        <div>
+          <h1>Shot-BY-Faisal — Booking</h1>
+          <p class="lead">Professional photoshoots — weddings, portraits, events</p>
+        </div>
+      </div>
+      <div class="small muted">Hosted on GitHub Pages • No server required</div>
+    </header>
+
+    <main class="grid">
+      <section>
+        <div class="card hero">
+          <h2>Showcase</h2>
+          <p class="small muted">Gallery of recent work. Replace images with your friend's photos in the <code>&lt;img&gt;</code> tags.</p>
+          <div class="gallery" id="gallery">
+            <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=60" alt="photo1">
+            <img src="https://images.unsplash.com/photo-1504198453319-5ce911bafcde?auto=format&fit=crop&w=800&q=60" alt="photo2">
+            <img src="https://images.unsplash.com/photo-1502685104226-ee32379fefbe?auto=format&fit=crop&w=800&q=60" alt="photo3">
+            <img src="https://images.unsplash.com/photo-1463453091185-61582044d556?auto=format&fit=crop&w=800&q=60" alt="photo4">
+            <img src="https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=800&q=60" alt="photo5">
+            <img src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc3?auto=format&fit=crop&w=800&q=60" alt="photo6">
+          </div>
+
+          <h3 style="margin-top:16px">Services & Packages</h3>
+          <div class="service-list">
+            <div class="service">Portrait — 30 mins</div>
+            <div class="service">Couple — 1 hour</div>
+            <div class="service">Event — 3 hours</div>
+            <div class="service">Wedding — Custom</div>
+          </div>
+
+        </div>
+
+        <div class="card" style="margin-top:18px">
+          <h3>About the Photographer</h3>
+          <p class="small muted">I’m a professional photographer dedicated to capturing life’s most memorable moments with creativity and precision. I specialize in portraits, events, and weddings, blending technical expertise with a unique artistic vision to make every shot tell a story. Using high-quality equipment and a personalized approach, I ensure each photoshoot is seamless and enjoyable. Whether it’s a milestone celebration, a couple’s portrait, or a corporate event, my goal is to turn moments into timeless memories.</p>
+        </div>
+
+      </section>
+
+      <aside class="right-col">
+        <div class="card">
+          <h2>Book a Photoshoot</h2>
+          <p class="small muted">Fill the form — you'll get a WhatsApp message to the photographer automatically for quick confirmation.</p>
+
+          <form id="bookingForm">
+            <label for="name">Full name</label>
+            <input id="name" name="name" required placeholder="Your full name">
+
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" required placeholder="you@example.com">
+
+            <label for="phone">Phone number</label>
+            <input id="phone" name="phone" required placeholder="+2348012345678">
+
+            <div class="row" style="margin-top:8px">
+              <div>
+                <label for="date">Preferred date</label>
+                <input id="date" name="date" type="date" required>
+              </div>
+              <div>
+                <label for="time">Preferred time</label>
+                <input id="time" name="time" type="time" required>
+              </div>
+            </div>
+
+            <label for="package">Package</label>
+            <select id="package" name="package">
+              <option value="Portrait">Portrait — 30 mins</option>
+              <option value="Couple">Couple — 1 hour</option>
+              <option value="Event">Event — 3 hours</option>
+              <option value="Wedding">Wedding — Custom</option>
+            </select>
+
+            <label for="message">Any notes</label>
+            <textarea id="message" name="message" placeholder="Tell the photographer about the shoot (location, style, etc.)"></textarea>
+
+            <div style="display:flex;gap:8px;margin-top:12px">
+              <button type="submit" class="btn">Send Booking</button>
+              <button type="button" id="saveLocal" class="btn ghost">Save Locally</button>
+            </div>
+
+          </form>
+
+          <div id="formStatus" style="margin-top:12px" class="small muted"></div>
+
+        </div>
+
+        <div class="card" style="margin-top:14px">
+          <h3>Saved Bookings (local)</h3>
+          <div id="bookingsList" style="margin-top:10px"></div>
+          <div style="display:flex;gap:8px;margin-top:10px">
+            <button id="clearBookings" class="btn ghost">Clear local bookings</button>
+            <button id="downloadBookings" class="btn ghost">Download JSON</button>
+          </div>
+        </div>
+
+      </aside>
+
+    </main>
+
+<div class="container">
+<!-- Gallery, services, booking form go here -->
+
+
+<!-- Social Media Links -->
+<footer class="social-links" style="text-align:center; margin-top:40px; padding:20px;">
+<h3>Connect With Us</h3>
+<a href="https://wa.me/2349162320399" target="_blank">WhatsApp</a>
+<a href="https://instagram.com/Shot_by_faisal" target="_blank">Instagram</a>
+      <p>Made with care • Replace images & contact details before publishing</p>
+    </footer>
+  </div>
+
+  <script>
+    // === CONFIG - replace these ===
+    const PHOTOGRAPHER_PHONE = '2349162320399'; //
+    const FORM_ENDPOINT = ''; // 
+    // ==============================
+
+    const form = document.getElementById('bookingForm');
+    const statusEl = document.getElementById('formStatus');
+    const bookingsKey = 'snapby_bookings_v1';
+
+    function getBookings(){
+      try{ return JSON.parse(localStorage.getItem(bookingsKey) || '[]') }catch(e){return[]}
+    }
+    function saveBookingLocal(b){
+      const all = getBookings(); all.unshift(b); localStorage.setItem(bookingsKey, JSON.stringify(all)); renderBookings();
+    }
+    function renderBookings(){
+      const list = document.getElementById('bookingsList'); list.innerHTML=''; const all = getBookings();
+      if(!all.length){ list.innerHTML = '<div class="small muted">No local bookings yet.</div>'; return }
+      all.forEach((b,i)=>{
+        const el = document.createElement('div'); el.className='booking-item';
+        el.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center"><strong>${escapeHtml(b.name)}</strong><div class="booking-meta">${escapeHtml(b.date || '')} ${escapeHtml(b.time || '')}</div></div><div class="small muted">${escapeHtml(b.package)} • ${escapeHtml(b.phone)}</div><div style="margin-top:6px;color:#cdebf0">${escapeHtml(b.message || '')}</div>`;
+        list.appendChild(el);
+      })
+    }
+
+    function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m]}) }
+
+    document.getElementById('saveLocal').addEventListener('click', ()=>{
+      const data = collectForm(); if(!data) return; saveBookingLocal(data); statusEl.textContent='Saved locally.'; setTimeout(()=>statusEl.textContent='',2500);
+    })
+
+    form.addEventListener('submit', async (e)=>{
+      e.preventDefault(); statusEl.textContent = 'Sending...';
+      const data = collectForm(); if(!data) { statusEl.textContent='Please fill required fields.'; return }
+      saveBookingLocal(data);
+
+      // 1) Open WhatsApp with message to photographer
+      const waMessage = `New booking from ${data.name}%0AEmail: ${data.email}%0APhone: ${data.phone}%0ADate: ${data.date} ${data.time}%0APackage: ${data.package}%0ANotes: ${encodeURIComponent(data.message||'')}`;
+      if(PHOTOGRAPHER_PHONE && PHOTOGRAPHER_PHONE !== 'PHONE_NUMBER'){
+        const waUrl = `https://wa.me/${PHOTOGRAPHER_PHONE}?text=${waMessage}`;
+        // Open in new tab/window (mobile will open WhatsApp)
+        window.open(waUrl, '_blank');
+      }
+
+      // 2) POST to Formspree if configured
+      if(FORM_ENDPOINT && !FORM_ENDPOINT.includes('YOUR_FORM_ID') && !FORM_ENDPOINT.includes('formspree.io/f/YOUR')){
+        try{
+          const payload = new FormData();
+          payload.append('name', data.name);
+          payload.append('email', data.email);
+          payload.append('phone', data.phone);
+          payload.append('date', data.date);
+          payload.append('time', data.time);
+          payload.append('package', data.package);
+          payload.append('message', data.message);
+          const res = await fetch(FORM_ENDPOINT, {method:'POST', body: payload});
+          if(res.ok){ statusEl.textContent = 'Booking sent — check your WhatsApp or email.' } else { statusEl.textContent = 'Booking saved locally. (Form submission failed)' }
+        }catch(err){ statusEl.textContent = 'Booking saved locally. (Network error)' }
+      } else {
+        statusEl.textContent = 'Booking saved locally. Opened WhatsApp for confirmation.'
+      }
+
+      setTimeout(()=>statusEl.textContent='',4000);
+      form.reset(); renderBookings();
+    })
+
+    function collectForm(){
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const date = document.getElementById('date').value;
+      const time = document.getElementById('time').value;
+      const pkg = document.getElementById('package').value;
+      const message = document.getElementById('message').value.trim();
+      if(!name || !email || !phone || !date || !time) return null;
+      return {name, email, phone, date, time, package: pkg, message, createdAt: new Date().toISOString()}
+    }
+
+    document.getElementById('clearBookings').addEventListener('click', ()=>{ if(confirm('Clear all local bookings?')){ localStorage.removeItem(bookingsKey); renderBookings(); }})
+    document.getElementById('downloadBookings').addEventListener('click', ()=>{
+      const data = getBookings(); const blob = new Blob([JSON.stringify(data,null,2)],{type:'application/json'}); const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download='bookings.json'; a.click(); URL.revokeObjectURL(url);
+    })
+
+    // initial render
+    renderBookings();
+// Configuration: Replace placeholders with real info
+const PHOTOGRAPHER_PHONE = '2349162320399'; // WhatsApp number
+const PHOTOGRAPHER_INSTAGRAM = 'shot_by_faisal'; // Instagram handle
+
+
+// Optional: dynamically update social links
+document.querySelector('.social-links a[href*="wa.me"]').href = `https://wa.me/${PHOTOGRAPHER_PHONE}`;
+document.querySelector('.social-links a[href*="instagram.com"]').href = `https://instagram.com/${PHOTOGRAPHER_INSTAGRAM}
+
+  </script>
+</body>
+</html>
