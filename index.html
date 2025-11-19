@@ -13,6 +13,17 @@
     a{color:inherit}
     .container{max-width:1100px;margin:32px auto;padding:20px}
     header{display:flex;align-items:center;justify-content:space-between}
+    /* Responsive nav */
+    .nav{display:flex;gap:18px;align-items:center}
+    .nav a{color:#e6eef8;padding:6px 10px;border-radius:8px}
+    .nav a:hover{background:rgba(255,255,255,0.03)}
+    .nav-toggle{display:none;background:transparent;border:1px solid rgba(255,255,255,0.06);padding:6px;border-radius:8px;color:var(--muted)}
+    @media (max-width:760px){
+      header{gap:12px}
+      .nav{position:absolute;right:20px;top:72px;flex-direction:column;background:var(--card);padding:10px;border-radius:8px;display:none;box-shadow:0 8px 30px rgba(2,6,23,0.6)}
+      .nav.show{display:flex}
+      .nav-toggle{display:inline-block}
+    }
     .brand{display:flex;gap:12px;align-items:center}
     .logo{width:52px;height:52px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#7dd3fc);display:flex;align-items:center;justify-content:center;color:#042028;font-weight:700}
     h1{margin:0;font-size:20px}
@@ -24,9 +35,19 @@
     .card{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 6px 18px rgba(2,6,23,0.6);}
     .hero{padding:28px;display:flex;flex-direction:column;gap:12px}
 
-    .gallery{display:flex;gap:8px;flex-wrap:wrap}
-    .gallery img{width:calc(33.333% - 6px);height:120px;object-fit:cover;border-radius:8px}
-    @media (max-width:600px){.gallery img{width:calc(50% - 6px)}}
+    /* Carousel + lightbox styles */
+    .carousel{position:relative;display:flex;flex-direction:column;align-items:center;gap:10px}
+    .carousel-main{width:100%;max-height:420px;object-fit:cover;border-radius:10px}
+    .carousel .controls{position:absolute;top:50%;transform:translateY(-50%);width:100%;display:flex;justify-content:space-between;padding:0 8px}
+    .carousel button.nav-btn{background:rgba(0,0,0,0.35);border:none;color:#fff;font-size:28px;padding:8px 12px;border-radius:8px;cursor:pointer}
+    .thumbnails{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+    .thumbnails img{width:calc(20% - 8px);height:72px;object-fit:cover;border-radius:6px;cursor:pointer;opacity:0.9;border:2px solid transparent}
+    .thumbnails img.active{border-color:var(--accent);opacity:1}
+    @media (max-width:600px){.thumbnails img{width:calc(33% - 8px);height:56px}}
+
+    .lightbox{position:fixed;inset:0;background:rgba(0,0,0,0.85);display:none;align-items:center;justify-content:center;z-index:1200}
+    .lightbox img{max-width:92%;max-height:90%;border-radius:10px}
+    .lightbox.show{display:flex}
 
     label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
     input,select,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#e6eef8}
@@ -40,10 +61,15 @@
     .small{font-size:13px;color:var(--muted)}
     .muted{color:var(--muted)}
 
-    .service-list{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
-    .service{background:var(--glass);padding:8px 10px;border-radius:8px;font-size:14px}
+    .service-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:14px}
+    .service{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:14px;border-radius:12px;font-size:15px;display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+    .service .price{font-weight:700;color:var(--accent);font-size:16px}
+    .service h4{margin:0;font-size:15px}
 
-    footer{text-align:center;color:var(--muted);margin-top:18px;font-size:13px}
+    footer{background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);margin-top:28px;color:var(--muted);font-size:13px;padding:18px;border-radius:10px}
+    .footer-grid{display:flex;justify-content:space-between;gap:20px;align-items:center;flex-wrap:wrap}
+    .footer-grid .social{display:flex;gap:12px;align-items:center}
+    .footer-grid a{color:var(--accent);font-weight:600}
 
     /* bookings list */
     .booking-item{padding:10px;border-radius:8px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));margin-bottom:10px}
@@ -82,8 +108,7 @@ a {color:#0ea5a4; text-decoration:none;}
             <img src="image7.jpeg" alt="photo7">
             <img src="image8.jpeg" alt="photo8">
             <img src="image9.jpeg" alt="photo9">
-            <img src="image12.jpeg" alt="photo10">
-            <img src="image19.jpeg" alt="photo11">
+            <img src="image10.jpeg" alt="photo10">
           </div>
 
           <h3 style="margin-top:16px">Services & Packages</h3>
@@ -176,7 +201,7 @@ a {color:#0ea5a4; text-decoration:none;}
 <!-- Social Media Links -->
 <footer class="social-links" style="text-align:center; margin-top:40px; padding:20px;">
 <h3>Connect With Us</h3>
-<a href="https://wa.me/2349162320399" target="_blank">WhatsApp</a>
+<a href="https://wa.me/2349116771219" target="_blank">WhatsApp</a>
 <a href="https://instagram.com/Shot_by_faisal" target="_blank">Instagram</a>
       <p>Made with care • Replace images & contact details before publishing</p>
     </footer>
@@ -184,7 +209,7 @@ a {color:#0ea5a4; text-decoration:none;}
 
   <script>
     // === CONFIG - replace these ===
-    const PHOTOGRAPHER_PHONE = '2349162320399';
+    const PHOTOGRAPHER_PHONE = '2349116771219';
     const PHOTOGRAPHER_INSTAGRAM = 'shot_by_faisal';
     const FORM_ENDPOINT = ''; // optional form endpoint (e.g. Formspree)
     // ==============================
