@@ -83,10 +83,12 @@ a {color:#0ea5a4; text-decoration:none;}
 
           <h3 style="margin-top:16px">Services & Packages</h3>
           <div class="service-list">
-            <div class="service">Portrait — 30 mins</div>
-            <div class="service">Couple — 1 hour</div>
-            <div class="service">Event — 3 hours</div>
-            <div class="service">Wedding — Custom</div>
+            <div class="service">Portrait — 10 pictures — ₦7,000</div>
+            <div class="service">Video shoot — short clip — ₦10,000</div>
+            <div class="service">Picnic — outdoor session — ₦15,000</div>
+            <div class="service">Wedding — per event — ₦50,000</div>
+            <div class="service">Product shoot — per item — ₦10,000</div>
+            <div class="service">Drone shoot — aerial — ₦120,000</div>
           </div>
 
         </div>
@@ -111,7 +113,7 @@ a {color:#0ea5a4; text-decoration:none;}
             <input id="email" name="email" type="email" required placeholder="you@example.com">
 
             <label for="phone">Phone number</label>
-            <input id="phone" name="phone" required placeholder="+2348012345678">
+            <input id="phone" name="phone" required placeholder="+2348012345678" inputmode="tel" pattern="^\+?[0-9\s\-]{7,20}$">
 
             <div class="row" style="margin-top:8px">
               <div>
@@ -126,11 +128,14 @@ a {color:#0ea5a4; text-decoration:none;}
 
             <label for="package">Package</label>
             <select id="package" name="package">
-              <option value="Portrait">Portrait — 30 mins</option>
-              <option value="Couple">Couple — 1 hour</option>
-              <option value="Event">Event — 3 hours</option>
-              <option value="Wedding">Wedding — Custom</option>
+              <option value="Portrait" data-price="7000">Portrait — 10 pictures — ₦7,000</option>
+              <option value="Video" data-price="10000">Video shoot — ₦10,000</option>
+              <option value="Picnic" data-price="15000">Picnic — ₦15,000</option>
+              <option value="Wedding" data-price="50000">Wedding — per event — ₦50,000</option>
+              <option value="Product" data-price="10000">Product shoot — ₦10,000</option>
+              <option value="Drone" data-price="120000">Drone shoot — ₦120,000</option>
             </select>
+            <div id="priceSummary" class="small muted" style="margin-top:6px">Price: ₦7,000</div>
 
             <label for="message">Any notes</label>
             <textarea id="message" name="message" placeholder="Tell the photographer about the shoot (location, style, etc.)"></textarea>
@@ -142,7 +147,7 @@ a {color:#0ea5a4; text-decoration:none;}
 
           </form>
 
-          <div id="formStatus" style="margin-top:12px" class="small muted"></div>
+          <div id="formStatus" style="margin-top:12px" class="small muted" role="status" aria-live="polite"></div>
 
         </div>
 
@@ -174,13 +179,15 @@ a {color:#0ea5a4; text-decoration:none;}
 
   <script>
     // === CONFIG - replace these ===
-    const PHOTOGRAPHER_PHONE = '2349162320399'; //
-    const FORM_ENDPOINT = ''; // 
+    const PHOTOGRAPHER_PHONE = '2349162320399';
+    const PHOTOGRAPHER_INSTAGRAM = 'shot_by_faisal';
+    const FORM_ENDPOINT = ''; // optional form endpoint (e.g. Formspree)
     // ==============================
 
     const form = document.getElementById('bookingForm');
     const statusEl = document.getElementById('formStatus');
     const bookingsKey = 'snapby_bookings_v1';
+    const submitBtn = form.querySelector('button[type="submit"]');
 
     function getBookings(){
       try{ return JSON.parse(localStorage.getItem(bookingsKey) || '[]') }catch(e){return[]}
@@ -201,19 +208,22 @@ a {color:#0ea5a4; text-decoration:none;}
     function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m]}) }
 
     document.getElementById('saveLocal').addEventListener('click', ()=>{
-      const data = collectForm(); if(!data) return; saveBookingLocal(data); statusEl.textContent='Saved locally.'; setTimeout(()=>statusEl.textContent='',2500);
+      if(!form.checkValidity()){ form.reportValidity(); statusEl.textContent='Please fill required fields.'; return }
+      const data = collectForm(); saveBookingLocal(data); statusEl.textContent='Saved locally.'; setTimeout(()=>statusEl.textContent='',2500);
     })
 
     form.addEventListener('submit', async (e)=>{
-      e.preventDefault(); statusEl.textContent = 'Sending...';
-      const data = collectForm(); if(!data) { statusEl.textContent='Please fill required fields.'; return }
-      saveBookingLocal(data);
+      e.preventDefault();
+      if(!form.checkValidity()){ form.reportValidity(); statusEl.textContent='Please fill required fields.'; return }
+      statusEl.textContent = 'Sending...';
+      submitBtn.disabled = true; const prevText = submitBtn.textContent; submitBtn.textContent = 'Sending...';
 
-      // 1) Open WhatsApp with message to photographer
-      const waMessage = `New booking from ${data.name}%0AEmail: ${data.email}%0APhone: ${data.phone}%0ADate: ${data.date} ${data.time}%0APackage: ${data.package}%0ANotes: ${encodeURIComponent(data.message||'')}`;
+      const data = collectForm(); saveBookingLocal(data);
+
+      // 1) Open WhatsApp with message to photographer (encode entire message)
+      const waMessage = encodeURIComponent(`New booking from ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone}\nDate: ${data.date} ${data.time}\nPackage: ${data.package}\nNotes: ${data.message||''}`);
       if(PHOTOGRAPHER_PHONE && PHOTOGRAPHER_PHONE !== 'PHONE_NUMBER'){
         const waUrl = `https://wa.me/${PHOTOGRAPHER_PHONE}?text=${waMessage}`;
-        // Open in new tab/window (mobile will open WhatsApp)
         window.open(waUrl, '_blank');
       }
 
@@ -236,6 +246,7 @@ a {color:#0ea5a4; text-decoration:none;}
       }
 
       setTimeout(()=>statusEl.textContent='',4000);
+      submitBtn.disabled = false; submitBtn.textContent = prevText;
       form.reset(); renderBookings();
     })
 
@@ -247,7 +258,6 @@ a {color:#0ea5a4; text-decoration:none;}
       const time = document.getElementById('time').value;
       const pkg = document.getElementById('package').value;
       const message = document.getElementById('message').value.trim();
-      if(!name || !email || !phone || !date || !time) return null;
       return {name, email, phone, date, time, package: pkg, message, createdAt: new Date().toISOString()}
     }
 
@@ -259,15 +269,12 @@ a {color:#0ea5a4; text-decoration:none;}
 
     // initial render
     renderBookings();
-// Configuration: Replace placeholders with real info
-const PHOTOGRAPHER_PHONE = '2349162320399'; // WhatsApp number
-const PHOTOGRAPHER_INSTAGRAM = 'shot_by_faisal'; // Instagram handle
 
-
-// Optional: dynamically update social links
-document.querySelector('.social-links a[href*="wa.me"]').href = `https://wa.me/${PHOTOGRAPHER_PHONE}`;
-document.querySelector('.social-links a[href*="instagram.com"]').href = `https://instagram.com/${PHOTOGRAPHER_INSTAGRAM}
+    // Optional: dynamically update social links
+    const waLink = document.querySelector('.social-links a[href*="wa.me"]');
+    if(waLink) waLink.href = `https://wa.me/${PHOTOGRAPHER_PHONE}`;
+    const igLink = document.querySelector('.social-links a[href*="instagram.com"]');
+    if(igLink) igLink.href = `https://instagram.com/${PHOTOGRAPHER_INSTAGRAM}`;
 
   </script>
-</body>
 </html>
