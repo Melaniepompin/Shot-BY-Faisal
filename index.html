@@ -7,7 +7,9 @@
   <meta name="description" content="Book a photoshoot with Shot_By_faisal - professional photographer"/>
   <style>
     /* Simple modern reset + styles */
-    :root{--accent:#0ea5a4;--bg:#0f172a;--card:#0b1220;--muted:#94a3b8;--glass: rgba(255,255,255,0.03)}
+    :root{--accent:#0ea5a4;--bg:#0f172a;--card:#0b1220;--muted:#94a3b8;--glass: rgba(255,255,255,0.03);--text:#e6eef8;--muted-2:#94a3b8}
+    /* Light theme overrides */
+    .light-theme{--accent:#0ea5a4;--bg:#f8fafc;--card:#ffffff;--muted:#475569;--glass: rgba(2,6,23,0.03);--text:#0b1220;--muted-2:#475569}
     *{box-sizing:border-box}
     html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;color:#e6eef8;background:linear-gradient(180deg,#071023 0%, #071428 100%)}
     a{color:inherit}
@@ -15,17 +17,18 @@
     header{display:flex;align-items:center;justify-content:space-between}
     .brand{display:flex;gap:12px;align-items:center}
     .logo{width:52px;height:52px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#7dd3fc);display:flex;align-items:center;justify-content:center;color:#042028;font-weight:700}
-    h1{margin:0;font-size:20px}
+    h1{margin:0;font-size:20px;color:var(--text)}
     p.lead{margin:6px 0 0;color:var(--muted)}
 
     .grid{display:grid;grid-template-columns:1fr 420px;gap:24px;margin-top:20px}
     @media (max-width:900px){.grid{grid-template-columns:1fr} .right-col{order:2}}
 
-    .card{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 6px 18px rgba(2,6,23,0.6);}
+    .card{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 6px 18px rgba(2,6,23,0.6);color:var(--text)}
     .hero{padding:28px;display:flex;flex-direction:column;gap:12px}
 
     .gallery{display:flex;gap:8px;flex-wrap:wrap}
-    .gallery img{width:calc(33.333% - 6px);height:120px;object-fit:cover;border-radius:8px}
+    .gallery img{width:calc(33.333% - 6px);height:140px;object-fit:cover;border-radius:8px;cursor:pointer;transition:transform .18s ease,box-shadow .18s ease}
+    .gallery img:hover{transform:scale(1.03);box-shadow:0 8px 30px rgba(2,6,23,0.5)}
     @media (max-width:600px){.gallery img{width:calc(50% - 6px)}}
 
     label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
@@ -40,10 +43,26 @@
     .small{font-size:13px;color:var(--muted)}
     .muted{color:var(--muted)}
 
-    .service-list{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
-    .service{background:var(--glass);padding:8px 10px;border-radius:8px;font-size:14px}
+    .service-list{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
+    .service{background:var(--glass);padding:12px 14px;border-radius:10px;font-size:14px;min-width:160px}
+    .service .price{display:block;margin-top:6px;font-weight:700;color:var(--accent);font-size:18px}
+    .service-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:12px}
 
     footer{text-align:center;color:var(--muted);margin-top:18px;font-size:13px}
+
+    /* Theme toggle */
+    .theme-toggle{border-radius:8px;padding:8px 10px;background:transparent;border:1px solid rgba(255,255,255,0.04);cursor:pointer;color:var(--muted);}
+
+    /* Lightbox / carousel */
+    .lightbox{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(2,6,23,0.85);z-index:9999;padding:20px}
+    .lightbox.hidden{display:none}
+    .lightbox img{max-width:90vw;max-height:90vh;border-radius:8px;box-shadow:0 10px 40px rgba(0,0,0,0.6);cursor:zoom-in}
+    .lightbox .meta{position:absolute;top:20px;left:20px;color:#fff}
+    .lightbox .close{position:absolute;top:18px;right:20px;background:transparent;border:0;color:#fff;font-size:28px;cursor:pointer}
+    .lightbox .nav{position:absolute;top:50%;transform:translateY(-50%);color:#fff;font-size:36px;background:transparent;border:0;cursor:pointer}
+    .lightbox .nav.prev{left:12px}
+    .lightbox .nav.next{right:12px}
+    .lightbox .info{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);color:#ddd;font-size:14px}
 
     /* bookings list */
     .booking-item{padding:10px;border-radius:8px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));margin-bottom:10px}
@@ -64,7 +83,10 @@ a {color:#0ea5a4; text-decoration:none;}
           <p class="lead">Professional photoshoots — weddings, portraits, events</p>
         </div>
       </div>
-      <div class="small muted">Hosted on GitHub Pages • No server required</div>
+      <div style="display:flex;gap:10px;align-items:center">
+        <div class="small muted">Hosted on GitHub Pages • No server required</div>
+        <button id="themeToggle" class="theme-toggle" aria-pressed="false" title="Toggle light/dark">☾</button>
+      </div>
     </header>
 
     <main class="grid">
@@ -72,28 +94,37 @@ a {color:#0ea5a4; text-decoration:none;}
         <div class="card hero">
           <h2>Showcase</h2>
           <p class="small muted">Gallery of recent work. Replace images with your friend's photos in the <code>&lt;img&gt;</code> tags.</p>
-          <div class="gallery" id="gallery">
-            <img src="image1.jpeg" alt="photo1">
-            <img src="image2.jpeg" alt="photo2">
-            <img src="image3.jpeg" alt="photo3">
-            <img src="image4.jpeg" alt="photo4">
-            <img src="image5.jpeg" alt="photo5">
-            <img src="image6.jpeg" alt="photo6">
-            <img src="image7.jpeg" alt="photo7">
-            <img src="image8.jpeg" alt="photo8">
-            <img src="image9.jpeg" alt="photo9">
-            <img src="image12.jpeg" alt="photo10">
-            <img src="image19.jpeg" alt="photo11">
-          </div>
+            <div class="gallery" id="gallery">
+              <img src="image1.jpeg" alt="photo1" data-index="0">
+              <img src="image2.jpeg" alt="photo2" data-index="1">
+              <img src="image3.jpeg" alt="photo3" data-index="2">
+              <img src="image4.jpeg" alt="photo4" data-index="3">
+              <img src="image5.jpeg" alt="photo5" data-index="4">
+              <img src="image6.jpeg" alt="photo6" data-index="5">
+              <img src="image7.jpeg" alt="photo7" data-index="6">
+              <img src="image8.jpeg" alt="photo8" data-index="7">
+              <img src="image9.jpeg" alt="photo9" data-index="8">
+              <img src="image12.jpeg" alt="photo10" data-index="9">
+              <img src="image19.jpeg" alt="photo11" data-index="10">
+            </div>
+
+            <!-- Lightbox overlay -->
+            <div id="lightbox" class="lightbox hidden" role="dialog" aria-modal="true" aria-hidden="true">
+              <button class="close" id="lbClose" aria-label="Close">✕</button>
+              <button class="nav prev" id="lbPrev" aria-label="Previous">〈</button>
+              <img id="lbImage" src="" alt="">
+              <button class="nav next" id="lbNext" aria-label="Next">〉</button>
+              <div class="info"><button id="lbOpenOrig" class="theme-toggle">Open original</button></div>
+            </div>
 
           <h3 style="margin-top:16px">Services & Packages</h3>
-          <div class="service-list">
-            <div class="service">Portrait — 10 pictures — ₦7,000</div>
-            <div class="service">Video shoot — short clip — ₦10,000</div>
-            <div class="service">Picnic — outdoor session — ₦15,000</div>
-            <div class="service">Wedding — per event — ₦50,000</div>
-            <div class="service">Product shoot — per item — ₦10,000</div>
-            <div class="service">Drone shoot — aerial — ₦120,000</div>
+          <div class="service-grid">
+            <div class="service"><strong>Portrait</strong><span class="price">₦7,000</span><span class="small muted">10 pictures</span></div>
+            <div class="service"><strong>Video shoot</strong><span class="price">₦10,000</span><span class="small muted">Short clip</span></div>
+            <div class="service"><strong>Picnic</strong><span class="price">₦15,000</span><span class="small muted">Outdoor session</span></div>
+            <div class="service"><strong>Wedding</strong><span class="price">₦50,000</span><span class="small muted">Per event</span></div>
+            <div class="service"><strong>Product shoot</strong><span class="price">₦10,000</span><span class="small muted">Per item</span></div>
+            <div class="service"><strong>Drone shoot</strong><span class="price">₦120,000</span><span class="small muted">Aerial</span></div>
           </div>
 
         </div>
@@ -261,9 +292,11 @@ a {color:#0ea5a4; text-decoration:none;}
       const phone = document.getElementById('phone').value.trim();
       const date = document.getElementById('date').value;
       const time = document.getElementById('time').value;
-      const pkg = document.getElementById('package').value;
+      const pkgEl = document.getElementById('package');
+      const pkg = pkgEl.value;
+      const pkgPrice = pkgEl.options[pkgEl.selectedIndex] && pkgEl.options[pkgEl.selectedIndex].dataset.price ? Number(pkgEl.options[pkgEl.selectedIndex].dataset.price) : 0;
       const message = document.getElementById('message').value.trim();
-      return {name, email, phone, date, time, package: pkg, message, createdAt: new Date().toISOString()}
+      return {name, email, phone, date, time, package: pkg, packagePrice: pkgPrice, message, createdAt: new Date().toISOString()}
     }
 
     document.getElementById('clearBookings').addEventListener('click', ()=>{ if(confirm('Clear all local bookings?')){ localStorage.removeItem(bookingsKey); renderBookings(); }})
@@ -280,6 +313,64 @@ a {color:#0ea5a4; text-decoration:none;}
     if(waLink) waLink.href = `https://wa.me/${PHOTOGRAPHER_PHONE}`;
     const igLink = document.querySelector('.social-links a[href*="instagram.com"]');
     if(igLink) igLink.href = `https://instagram.com/${PHOTOGRAPHER_INSTAGRAM}`;
+
+    /* ===== Additional UI: Theme toggle, price summary, lightbox ===== */
+    // Format price helper
+    function formatPrice(n){
+      const num = Number(n) || 0; return '₦' + String(num).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    // Price summary wiring
+    const packageSelect = document.getElementById('package');
+    const priceSummaryEl = document.getElementById('priceSummary');
+    function updatePriceSummary(){
+      if(!packageSelect || !priceSummaryEl) return;
+      const opt = packageSelect.options[packageSelect.selectedIndex];
+      const p = opt && opt.dataset && opt.dataset.price ? Number(opt.dataset.price) : 0;
+      priceSummaryEl.textContent = `Price: ${formatPrice(p)}`;
+    }
+    if(packageSelect){ packageSelect.addEventListener('change', updatePriceSummary); updatePriceSummary(); }
+
+    // Theme toggle (dark/light)
+    const themeToggle = document.getElementById('themeToggle');
+    const THEME_KEY = 'sbf_theme';
+    function applyTheme(t){
+      if(t === 'light'){ document.documentElement.classList.add('light-theme'); themeToggle.textContent = '☼'; themeToggle.setAttribute('aria-pressed','true'); }
+      else { document.documentElement.classList.remove('light-theme'); themeToggle.textContent = '☾'; themeToggle.setAttribute('aria-pressed','false'); }
+    }
+    let saved = localStorage.getItem(THEME_KEY);
+    if(!saved){ saved = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark'; }
+    applyTheme(saved);
+    if(themeToggle){ themeToggle.addEventListener('click', ()=>{ const next = document.documentElement.classList.contains('light-theme') ? 'dark' : 'light'; localStorage.setItem(THEME_KEY, next); applyTheme(next); }) }
+
+    // Lightbox gallery
+    (function(){
+      const imgs = Array.from(document.querySelectorAll('#gallery img'));
+      if(!imgs.length) return;
+      const lb = document.getElementById('lightbox');
+      const lbImg = document.getElementById('lbImage');
+      const lbClose = document.getElementById('lbClose');
+      const lbPrev = document.getElementById('lbPrev');
+      const lbNext = document.getElementById('lbNext');
+      const lbOpenOrig = document.getElementById('lbOpenOrig');
+      let idx = 0;
+      function openAt(i){ idx = (i+imgs.length) % imgs.length; lbImg.src = imgs[idx].src; lbImg.alt = imgs[idx].alt || '';
+        lb.classList.remove('hidden'); lb.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; }
+      function close(){ lb.classList.add('hidden'); lb.setAttribute('aria-hidden','true'); document.body.style.overflow=''; lbImg.classList.remove('zoomed'); }
+      function prev(){ openAt(idx-1); }
+      function next(){ openAt(idx+1); }
+      imgs.forEach((im,i)=> im.addEventListener('click', ()=> openAt(i)));
+      lbClose && lbClose.addEventListener('click', close);
+      lbPrev && lbPrev.addEventListener('click', prev);
+      lbNext && lbNext.addEventListener('click', next);
+      lb && lb.addEventListener('click', (e)=>{ if(e.target === lb) close(); });
+      // keyboard
+      document.addEventListener('keydown', (e)=>{ if(lb && !lb.classList.contains('hidden')){ if(e.key === 'Escape') close(); if(e.key === 'ArrowLeft') prev(); if(e.key === 'ArrowRight') next(); } });
+      // open original in new tab
+      if(lbOpenOrig){ lbOpenOrig.addEventListener('click', ()=>{ window.open(imgs[idx].src, '_blank'); }); }
+      // toggle zoom
+      lbImg && lbImg.addEventListener('click', ()=>{ lbImg.classList.toggle('zoomed'); if(lbImg.classList.contains('zoomed')){ lbImg.style.cursor='zoom-out'; } else { lbImg.style.cursor='zoom-in'; } });
+    })();
 
   </script>
 </html>
