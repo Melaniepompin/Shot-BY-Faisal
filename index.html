@@ -1,376 +1,540 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Shot_BY_Faisal Booking Site</title>
-  <meta name="description" content="Book a photoshoot with Shot_By_faisal - professional photographer"/>
-  <style>
-    /* Simple modern reset + styles */
-    :root{--accent:#0ea5a4;--bg:#0f172a;--card:#0b1220;--muted:#94a3b8;--glass: rgba(255,255,255,0.03);--text:#e6eef8;--muted-2:#94a3b8}
-    /* Light theme overrides */
-    .light-theme{--accent:#0ea5a4;--bg:#f8fafc;--card:#ffffff;--muted:#475569;--glass: rgba(2,6,23,0.03);--text:#0b1220;--muted-2:#475569}
-    *{box-sizing:border-box}
-    html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;color:#e6eef8;background:linear-gradient(180deg,#071023 0%, #071428 100%)}
-    a{color:inherit}
-    .container{max-width:1100px;margin:32px auto;padding:20px}
-    header{display:flex;align-items:center;justify-content:space-between}
-    .brand{display:flex;gap:12px;align-items:center}
-    .logo{width:52px;height:52px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#7dd3fc);display:flex;align-items:center;justify-content:center;color:#042028;font-weight:700}
-    h1{margin:0;font-size:20px;color:var(--text)}
-    p.lead{margin:6px 0 0;color:var(--muted)}
+<meta charset="UTF-8">
+<title>Transahel.ng | E-Bike Booking</title>
 
-    .grid{display:grid;grid-template-columns:1fr 420px;gap:24px;margin-top:20px}
-    @media (max-width:900px){.grid{grid-template-columns:1fr} .right-col{order:2}}
+<style>
+:root{
+  --bg:#f5f5f5;
+  --card:#ffffff;
+  --text:#111;
+  --accent:#0a8f4d;
+}
 
-    .card{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 6px 18px rgba(2,6,23,0.6);color:var(--text)}
-    .hero{padding:28px;display:flex;flex-direction:column;gap:12px}
+body.dark{
+  --bg:#121212;
+  --card:#1e1e1e;
+  --text:#f1f1f1;
+}
 
-    .gallery{display:flex;gap:8px;flex-wrap:wrap}
-    .gallery img{width:calc(33.333% - 6px);height:140px;object-fit:cover;border-radius:8px;cursor:pointer;transition:transform .18s ease,box-shadow .18s ease}
-    .gallery img:hover{transform:scale(1.03);box-shadow:0 8px 30px rgba(2,6,23,0.5)}
-    @media (max-width:600px){.gallery img{width:calc(50% - 6px)}}
+body{
+  margin:0;
+  font-family:Arial, Helvetica, sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
 
-    label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
-    input,select,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#e6eef8}
-    textarea{min-height:100px}
-    .row{display:flex;gap:12px}
-    .row > *{flex:1}
+header{
+  background:var(--accent);
+  color:#fff;
+  padding:30px;
+  text-align:center;
+}
 
-    .btn{display:inline-block;padding:10px 14px;border-radius:10px;background:var(--accent);color:#042028;font-weight:600;border:none;cursor:pointer}
-    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+header h1{
+  margin:0;
+  font-size:32px;
+}
 
-    .small{font-size:13px;color:var(--muted)}
-    .muted{color:var(--muted)}
+header p{
+  margin-top:8px;
+  font-size:16px;
+}
 
-    .service-list{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
-    .service{background:var(--glass);padding:12px 14px;border-radius:10px;font-size:14px;min-width:160px}
-    .service .price{display:block;margin-top:6px;font-weight:700;color:var(--accent);font-size:18px}
-    .service-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:12px}
+.controls{
+  text-align:center;
+  padding:20px;
+}
 
-    footer{text-align:center;color:var(--muted);margin-top:18px;font-size:13px}
+.controls button{
+  padding:10px 18px;
+  margin:6px;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  background:#000;
+  color:#fff;
+  font-size:14px;
+}
 
-    /* Theme toggle */
-    .theme-toggle{border-radius:8px;padding:8px 10px;background:transparent;border:1px solid rgba(255,255,255,0.04);cursor:pointer;color:var(--muted);}
+.container{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+  gap:30px;
+  padding:40px;
+}
 
-    /* Lightbox / carousel */
-    .lightbox{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(2,6,23,0.85);z-index:9999;padding:20px}
-    .lightbox.hidden{display:none}
-    .lightbox img{max-width:90vw;max-height:90vh;border-radius:8px;box-shadow:0 10px 40px rgba(0,0,0,0.6);cursor:zoom-in}
-    .lightbox .meta{position:absolute;top:20px;left:20px;color:#fff}
-    .lightbox .close{position:absolute;top:18px;right:20px;background:transparent;border:0;color:#fff;font-size:28px;cursor:pointer}
-    .lightbox .nav{position:absolute;top:50%;transform:translateY(-50%);color:#fff;font-size:36px;background:transparent;border:0;cursor:pointer}
-    .lightbox .nav.prev{left:12px}
-    .lightbox .nav.next{right:12px}
-    .lightbox .info{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);color:#ddd;font-size:14px}
+.card{
+  background:var(--card);
+  border-radius:14px;
+  box-shadow:0 12px 28px rgba(0,0,0,.25);
+  overflow:hidden;
+  opacity:0;
+  transform:translateY(40px);
+  transition:0.6s;
+}
 
-    /* bookings list */
-    .booking-item{padding:10px;border-radius:8px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));margin-bottom:10px}
-    .booking-meta{display:flex;justify-content:space-between;font-size:13px;color:var(--muted)}
-.container {max-width:1100px; margin:0 auto; padding:20px;}
-a {color:#0ea5a4; text-decoration:none;}
-.social-links a {margin-right:15px; font-size:18px;}
-.social-links h3 {margin-bottom:10px;}
-  </style>
+.card.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.card img{
+  width:100%;
+  height:230px;
+  object-fit:cover;
+}
+
+.card-content{
+  padding:20px;
+}
+
+.card-content h3{
+  margin-top:0;
+  color:var(--accent);
+}
+
+.specs{
+  font-size:14px;
+  line-height:1.8;
+}
+
+.price{
+  font-size:18px;
+  font-weight:bold;
+  margin:12px 0;
+}
+
+.actions{
+  display:flex;
+  gap:10px;
+}
+
+.actions a{
+  flex:1;
+  text-align:center;
+  padding:10px;
+  text-decoration:none;
+  border-radius:6px;
+  color:#fff;
+  font-size:14px;
+}
+
+.whatsapp{ background:#25D366; }
+.call{ background:#000; }
+
+label{
+  display:block;
+  font-size:13px;
+  color:#666;
+  margin-bottom:6px;
+  font-weight:600;
+}
+
+input,select,textarea{
+  width:100%;
+  padding:10px;
+  border-radius:8px;
+  border:1px solid #ddd;
+  background:#fff;
+  color:#111;
+  font-family:inherit;
+  font-size:14px;
+  margin-bottom:12px;
+  box-sizing:border-box;
+}
+
+textarea{
+  min-height:100px;
+  resize:vertical;
+}
+
+input:focus,select:focus,textarea:focus{
+  outline:none;
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(10,143,77,0.1);
+}
+
+.form-group{
+  margin-bottom:15px;
+}
+
+.form-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
+
+.btn-group{
+  display:flex;
+  gap:10px;
+  margin-top:15px;
+}
+
+.btn-primary{
+  padding:12px 20px;
+  border-radius:8px;
+  background:var(--accent);
+  color:#fff;
+  border:none;
+  cursor:pointer;
+  font-weight:600;
+  font-size:14px;
+  transition:background 0.3s;
+}
+
+.btn-primary:hover{
+  background:#087d42;
+}
+
+.btn-secondary{
+  padding:12px 20px;
+  border-radius:8px;
+  background:#f0f0f0;
+  color:#111;
+  border:1px solid #ddd;
+  cursor:pointer;
+  font-weight:600;
+  font-size:14px;
+  transition:background 0.3s;
+}
+
+.btn-secondary:hover{
+  background:#e0e0e0;
+}
+
+.booking-section{
+  background:#f9f9f9;
+  padding:30px;
+  border-radius:14px;
+  margin-top:40px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.08);
+}
+
+.booking-section h2{
+  color:var(--accent);
+  margin-top:0;
+}
+
+.form-status{
+  margin-top:12px;
+  padding:10px;
+  border-radius:6px;
+  font-size:13px;
+  display:none;
+}
+
+.form-status.show{
+  display:block;
+}
+
+.form-status.success{
+  background:#d4edda;
+  color:#155724;
+  border:1px solid #c3e6cb;
+}
+
+.form-status.error{
+  background:#f8d7da;
+  color:#721c24;
+  border:1px solid #f5c6cb;
+}
+
+.video-section{
+  background:#f9f9f9;
+  padding:30px;
+  border-radius:14px;
+  margin:40px 0;
+  box-shadow:0 6px 20px rgba(0,0,0,0.08);
+}
+
+.video-section h2{
+  color:var(--accent);
+  margin-top:0;
+}
+
+.video-container{
+  position:relative;
+  width:100%;
+  padding-bottom:56.25%;
+  height:0;
+  overflow:hidden;
+  border-radius:12px;
+}
+
+.video-container iframe{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  border:none;
+  border-radius:12px;
+}
+
+footer{
+  text-align:center;
+  padding:20px;
+  font-size:14px;
+  opacity:.7;
+}
+</style>
 </head>
+
 <body>
-  <div class="container">
-    <header>
-      <div class="brand">
-        <div class="logo">SBF</div>
-        <div>
-          <h1>Shot-BY-Faisal — Booking</h1>
-          <p class="lead">Professional photoshoots — weddings, portraits, events</p>
-        </div>
-      </div>
-      <div style="display:flex;gap:10px;align-items:center">
-        <div class="small muted">Hosted on GitHub Pages • No server required</div>
-        <button id="themeToggle" class="theme-toggle" aria-pressed="false" title="Toggle light/dark">☾</button>
-      </div>
-    </header>
 
-    <main class="grid">
-      <section>
-        <div class="card hero">
-          <h2>Showcase</h2>
-          <p class="small muted">Gallery of recent work. Replace images with your friend's photos in the <code>&lt;img&gt;</code> tags.</p>
-            <div class="gallery" id="gallery">
-              <img src="image1.jpeg" alt="photo1" data-index="0">
-              <img src="image2.jpeg" alt="photo2" data-index="1">
-              <img src="image3.jpeg" alt="photo3" data-index="2">
-              <img src="image4.jpeg" alt="photo4" data-index="3">
-              <img src="image5.jpeg" alt="photo5" data-index="4">
-              <img src="image6.jpeg" alt="photo6" data-index="5">
-              <img src="image7.jpeg" alt="photo7" data-index="6">
-              <img src="image8.jpeg" alt="photo8" data-index="7">
-              <img src="image9.jpeg" alt="photo9" data-index="8">
-              <img src="image12.jpeg" alt="photo10" data-index="9">
-              <img src="image19.jpeg" alt="photo11" data-index="10">
-            </div>
+<header>
+  <h1>Transahel.ng</h1>
+  <p>E-Bike Sales & Booking Platform</p>
+</header>
 
-            <!-- Lightbox overlay -->
-            <div id="lightbox" class="lightbox hidden" role="dialog" aria-modal="true" aria-hidden="true">
-              <button class="close" id="lbClose" aria-label="Close">✕</button>
-              <button class="nav prev" id="lbPrev" aria-label="Previous">〈</button>
-              <img id="lbImage" src="" alt="">
-              <button class="nav next" id="lbNext" aria-label="Next">〉</button>
-              <div class="info"><button id="lbOpenOrig" class="theme-toggle">Open original</button></div>
-            </div>
-
-          <h3 style="margin-top:16px">Services & Packages</h3>
-          <div class="service-grid">
-            <div class="service"><strong>Portrait</strong><span class="price">₦7,000</span><span class="small muted">10 pictures</span></div>
-            <div class="service"><strong>Video shoot</strong><span class="price">₦10,000</span><span class="small muted">Short clip</span></div>
-            <div class="service"><strong>Picnic</strong><span class="price">₦15,000</span><span class="small muted">Outdoor session</span></div>
-            <div class="service"><strong>Wedding</strong><span class="price">₦50,000</span><span class="small muted">Per event</span></div>
-            <div class="service"><strong>Product shoot</strong><span class="price">₦10,000</span><span class="small muted">Per item</span></div>
-            <div class="service"><strong>Drone shoot</strong><span class="price">₦120,000</span><span class="small muted">Aerial</span></div>
-          </div>
-
-        </div>
-
-        <div class="card" style="margin-top:18px">
-          <h3>About the Cinematographer</h3>
-          <p class="small muted">I’m a professional photographer dedicated to capturing life’s most memorable moments with creativity and precision. I specialize in portraits, events, and weddings, blending technical expertise with a unique artistic vision to make every shot tell a story. Using high-quality equipment and a personalized approach, I ensure each photoshoot is seamless and enjoyable. Whether it’s a milestone celebration, a couple’s portrait, or a corporate event, my goal is to turn moments into timeless memories.</p>
-        </div>
-
-      </section>
-
-      <aside class="right-col">
-        <div class="card">
-          <h2>Book a Photoshoot</h2>
-          <p class="small muted">Fill the form — you'll get a WhatsApp message to the photographer automatically for quick confirmation.</p>
-
-          <form id="bookingForm">
-            <label for="name">Full name</label>
-            <input id="name" name="name" required placeholder="Your full name">
-
-            <label for="email">Email</label>
-            <input id="email" name="email" type="email" required placeholder="you@example.com">
-
-            <label for="phone">Phone number</label>
-            <input id="phone" name="phone" required placeholder="+2349162320399" inputmode="tel" pattern="^\+?[0-9\s\-]{7,20}$">
-
-            <div class="row" style="margin-top:8px">
-              <div>
-                <label for="date">Preferred date</label>
-                <input id="date" name="date" type="date" required>
-              </div>
-              <div>
-                <label for="time">Preferred time</label>
-                <input id="time" name="time" type="time" required>
-              </div>
-            </div>
-
-            <label for="package">Package</label>
-            <select id="package" name="package">
-              <option value="Portrait" data-price="7000">Portrait — 10 pictures — ₦7,000</option>
-              <option value="Video" data-price="10000">Video shoot — ₦10,000</option>
-              <option value="Picnic" data-price="15000">Picnic — ₦15,000</option>
-              <option value="Wedding" data-price="50000">Wedding — per event — ₦50,000</option>
-              <option value="Product" data-price="10000">Product shoot — ₦10,000</option>
-              <option value="Drone" data-price="120000">Drone shoot — ₦120,000</option>
-            </select>
-            <div id="priceSummary" class="small muted" style="margin-top:6px">Price: ₦7,000</div>
-
-            <label for="message">Any notes</label>
-            <textarea id="message" name="message" placeholder="Tell the photographer about the shoot (location, style, etc.)"></textarea>
-
-            <div style="display:flex;gap:8px;margin-top:12px">
-              <button type="submit" class="btn">Send Booking</button>
-              <button type="button" id="saveLocal" class="btn ghost">Save Locally</button>
-            </div>
-
-          </form>
-
-          <div id="formStatus" style="margin-top:12px" class="small muted" role="status" aria-live="polite"></div>
-
-        </div>
-
-        <div class="card" style="margin-top:14px">
-          <h3>Saved Bookings (local)</h3>
-          <div id="bookingsList" style="margin-top:10px"></div>
-          <div style="display:flex;gap:8px;margin-top:10px">
-            <button id="clearBookings" class="btn ghost">Clear local bookings</button>
-            <button id="downloadBookings" class="btn ghost">Download JSON</button>
-          </div>
-        </div>
-
-      </aside>
-
-    </main>
+<div class="controls">
+  <button onclick="toggleTheme()">🌙 Toggle Theme</button>
+</div>
 
 <div class="container">
-<!-- Gallery, services, booking form go here -->
 
-
-<!-- Social Media Links -->
-<footer class="social-links" style="text-align:center; margin-top:40px; padding:20px;">
-<h3>Connect With Us</h3>
-<a href="https://wa.me/2349162320399" target="_blank">WhatsApp</a>
-<a href="https://instagram.com/Shot_by_faisal" target="_blank">Instagram</a>
-      <p>Made with care • Replace images & contact details before publishing</p>
-    </footer>
+  <!-- TYPE I -->
+  <div class="card">
+    <img src="https://via.placeholder.com/800x400?text=E-Bike+Type+I">
+    <div class="card-content">
+      <h3>Type I E-Bike</h3>
+      <div class="specs">
+        Battery Capacity: 2000W<br>
+        Top Speed: 85 km/h<br>
+        Coverage: 120 km (full charge)<br>
+        Battery Type: Gel Batteries<br>
+        Gear System: 3 Gears<br>
+        Speedometer: LED
+      </div>
+      <div class="price">₦1,850,000</div>
+      <div class="actions">
+        <a class="whatsapp" href="https://wa.me/2348035901765" target="_blank">WhatsApp</a>
+        <a class="call" href="tel:08035901765">Call</a>
+      </div>
+    </div>
   </div>
 
-  <script>
-    // === CONFIG - replace these ===
-    const PHOTOGRAPHER_PHONE = '2349162320399';
-    const PHOTOGRAPHER_INSTAGRAM = 'shot_by_faisal';
-    const FORM_ENDPOINT = ''; // optional form endpoint (e.g. Formspree)
-    // ==============================
+  <!-- TYPE II -->
+  <div class="card">
+    <img src="https://via.placeholder.com/800x400?text=E-Bike+Type+II">
+    <div class="card-content">
+      <h3>Type II E-Bike</h3>
+      <div class="specs">
+        Battery Capacity: 1500W<br>
+        Top Speed: 75 km/h<br>
+        Coverage: 100 km (full charge)<br>
+        Battery Type: Gel Batteries<br>
+        Gear System: 3 Gears<br>
+        Speedometer: LED
+      </div>
+      <div class="price">₦1,750,000</div>
+      <div class="actions">
+        <a class="whatsapp" href="https://wa.me/2348035901765" target="_blank">WhatsApp</a>
+        <a class="call" href="tel:08035901765">Call</a>
+      </div>
+    </div>
+  </div>
 
-    const form = document.getElementById('bookingForm');
-    const statusEl = document.getElementById('formStatus');
-    const bookingsKey = 'snapby_bookings_v1';
-    const submitBtn = form.querySelector('button[type="submit"]');
+  <!-- TYPE III -->
+  <div class="card">
+    <img src="https://via.placeholder.com/800x400?text=E-Bike+Type+III">
+    <div class="card-content">
+      <h3>Type III E-Bike</h3>
+      <div class="specs">
+        Battery Capacity: 1500W<br>
+        Top Speed: 65 km/h<br>
+        Coverage: 100 km (full charge)<br>
+        Battery Type: Gel Batteries<br>
+        Gear System: 3 Gears<br>
+        Speedometer: LED
+      </div>
+      <div class="price">₦1,300,000</div>
+      <div class="actions">
+        <a class="whatsapp" href="https://wa.me/2348035901765" target="_blank">WhatsApp</a>
+        <a class="call" href="tel:08035901765">Call</a>
+      </div>
+    </div>
+  </div>
 
-    function getBookings(){
-      try{ return JSON.parse(localStorage.getItem(bookingsKey) || '[]') }catch(e){return[]}
-    }
-    function saveBookingLocal(b){
-      const all = getBookings(); all.unshift(b); localStorage.setItem(bookingsKey, JSON.stringify(all)); renderBookings();
-    }
-    function renderBookings(){
-      const list = document.getElementById('bookingsList'); list.innerHTML=''; const all = getBookings();
-      if(!all.length){ list.innerHTML = '<div class="small muted">No local bookings yet.</div>'; return }
-      all.forEach((b,i)=>{
-        const el = document.createElement('div'); el.className='booking-item';
-        el.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center"><strong>${escapeHtml(b.name)}</strong><div class="booking-meta">${escapeHtml(b.date || '')} ${escapeHtml(b.time || '')}</div></div><div class="small muted">${escapeHtml(b.package)} • ${escapeHtml(b.phone)}</div><div style="margin-top:6px;color:#cdebf0">${escapeHtml(b.message || '')}</div>`;
-        list.appendChild(el);
-      })
-    }
+</div>
 
-    function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m]}) }
+<div class="video-section">
+  <h2>🎬 E-Bike Demo Video</h2>
+  <p>Watch our e-bikes in action. See the features, performance, and why Transahel.ng is your best choice.</p>
+  
+  <div class="video-container">
+    <iframe 
+      src="https://www.youtube.com/embed/VIDEO_ID_HERE" 
+      title="Transahel E-Bike Demo"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+      allowfullscreen>
+    </iframe>
+  </div>
+  <p style="font-size:13px; color:#666; margin-top:12px;">Replace <code>VIDEO_ID_HERE</code> with your YouTube video ID to display your demo.</p>
+</div>
 
-    document.getElementById('saveLocal').addEventListener('click', ()=>{
-      if(!form.checkValidity()){ form.reportValidity(); statusEl.textContent='Please fill required fields.'; return }
-      const data = collectForm(); saveBookingLocal(data); statusEl.textContent='Saved locally.'; setTimeout(()=>statusEl.textContent='',2500);
-    })
+<div class="booking-section">
+  <h2>📅 Book Your E-Bike</h2>
+  <p>Fill out the form below and we'll contact you via WhatsApp to confirm your booking.</p>
+  
+  <form id="bikeBookingForm">
+    <div class="form-group">
+      <label for="custName">Full Name</label>
+      <input id="custName" name="custName" type="text" required placeholder="Your full name">
+    </div>
 
-    form.addEventListener('submit', async (e)=>{
-      e.preventDefault();
-      if(!form.checkValidity()){ form.reportValidity(); statusEl.textContent='Please fill required fields.'; return }
-      statusEl.textContent = 'Sending...';
-      submitBtn.disabled = true; const prevText = submitBtn.textContent; submitBtn.textContent = 'Sending...';
+    <div class="form-group">
+      <label for="custEmail">Email Address</label>
+      <input id="custEmail" name="custEmail" type="email" required placeholder="you@example.com">
+    </div>
 
-      const data = collectForm(); saveBookingLocal(data);
+    <div class="form-group">
+      <label for="custPhone">Phone Number</label>
+      <input id="custPhone" name="custPhone" type="tel" required placeholder="+234 801 234 5678">
+    </div>
 
-      // 1) Open WhatsApp with message to photographer (encode entire message)
-      const waMessage = encodeURIComponent(`New booking from ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone}\nDate: ${data.date} ${data.time}\nPackage: ${data.package}\nNotes: ${data.message||''}`);
-      if(PHOTOGRAPHER_PHONE && PHOTOGRAPHER_PHONE !== 'PHONE_NUMBER'){
-        const waUrl = `https://wa.me/${PHOTOGRAPHER_PHONE}?text=${waMessage}`;
-        window.open(waUrl, '_blank');
-      }
+    <div class="form-row">
+      <div class="form-group">
+        <label for="bookDate">Preferred Date</label>
+        <input id="bookDate" name="bookDate" type="date" required>
+      </div>
+      <div class="form-group">
+        <label for="bookTime">Preferred Time</label>
+        <input id="bookTime" name="bookTime" type="time" required>
+      </div>
+    </div>
 
-      // 2) POST to Formspree if configured
-      if(FORM_ENDPOINT && !FORM_ENDPOINT.includes('YOUR_FORM_ID') && !FORM_ENDPOINT.includes('formspree.io/f/YOUR')){
-        try{
-          const payload = new FormData();
-          payload.append('name', data.name);
-          payload.append('email', data.email);
-          payload.append('phone', data.phone);
-          payload.append('date', data.date);
-          payload.append('time', data.time);
-          payload.append('package', data.package);
-          payload.append('message', data.message);
-          const res = await fetch(FORM_ENDPOINT, {method:'POST', body: payload});
-          if(res.ok){ statusEl.textContent = 'Booking sent — check your WhatsApp or email.' } else { statusEl.textContent = 'Booking saved locally. (Form submission failed)' }
-        }catch(err){ statusEl.textContent = 'Booking saved locally. (Network error)' }
-      } else {
-        statusEl.textContent = 'Booking saved locally. Opened WhatsApp for confirmation.'
-      }
+    <div class="form-group">
+      <label for="bikeType">E-Bike Type</label>
+      <select id="bikeType" name="bikeType" required>
+        <option value="">Select a bike type</option>
+        <option value="Type I">Type I E-Bike — ₦1,850,000</option>
+        <option value="Type II">Type II E-Bike — ₦1,750,000</option>
+        <option value="Type III">Type III E-Bike — ₦1,300,000</option>
+      </select>
+    </div>
 
-      setTimeout(()=>statusEl.textContent='',4000);
-      submitBtn.disabled = false; submitBtn.textContent = prevText;
-      form.reset(); renderBookings();
-    })
+    <div class="form-group">    
+      <label for="custMessage">Additional Notes</label>
+      <textarea id="custMessage" name="custMessage" placeholder="Tell us more about your interest or any questions..."></textarea>
+    </div>
 
-    function collectForm(){
-      const name = document.getElementById('name').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const phone = document.getElementById('phone').value.trim();
-      const date = document.getElementById('date').value;
-      const time = document.getElementById('time').value;
-      const pkgEl = document.getElementById('package');
-      const pkg = pkgEl.value;
-      const pkgPrice = pkgEl.options[pkgEl.selectedIndex] && pkgEl.options[pkgEl.selectedIndex].dataset.price ? Number(pkgEl.options[pkgEl.selectedIndex].dataset.price) : 0;
-      const message = document.getElementById('message').value.trim();
-      return {name, email, phone, date, time, package: pkg, packagePrice: pkgPrice, message, createdAt: new Date().toISOString()}
-    }
+    <div class="btn-group">
+      <button type="submit" class="btn-primary">📨 Send Booking Request</button>
+      <button type="button" id="saveFormLocal" class="btn-secondary">💾 Save Locally</button>
+    </div>
 
-    document.getElementById('clearBookings').addEventListener('click', ()=>{ if(confirm('Clear all local bookings?')){ localStorage.removeItem(bookingsKey); renderBookings(); }})
-    document.getElementById('downloadBookings').addEventListener('click', ()=>{
-      const data = getBookings(); const blob = new Blob([JSON.stringify(data,null,2)],{type:'application/json'}); const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); a.href = url; a.download='bookings.json'; a.click(); URL.revokeObjectURL(url);
-    })
+    <div id="bookingStatus" class="form-status"></div>
+  </form>
+</div>
 
-    // initial render
-    renderBookings();
+<footer>
+  <p>&copy; 2024 Transahel.ng. All rights reserved.</p>
+</footer>
 
-    // Optional: dynamically update social links
-    const waLink = document.querySelector('.social-links a[href*="wa.me"]');
-    if(waLink) waLink.href = `https://wa.me/${PHOTOGRAPHER_PHONE}`;
-    const igLink = document.querySelector('.social-links a[href*="instagram.com"]');
-    if(igLink) igLink.href = `https://instagram.com/${PHOTOGRAPHER_INSTAGRAM}`;
+<script>
+function toggleTheme() {
+  document.body.classList.toggle('dark');
+  localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+}
 
-    /* ===== Additional UI: Theme toggle, price summary, lightbox ===== */
-    // Format price helper
-    function formatPrice(n){
-      const num = Number(n) || 0; return '₦' + String(num).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    }
+// Load saved theme
+if (localStorage.getItem('theme') === 'dark') {
+  document.body.classList.add('dark');
+}
 
-    // Price summary wiring
-    const packageSelect = document.getElementById('package');
-    const priceSummaryEl = document.getElementById('priceSummary');
-    function updatePriceSummary(){
-      if(!packageSelect || !priceSummaryEl) return;
-      const opt = packageSelect.options[packageSelect.selectedIndex];
-      const p = opt && opt.dataset && opt.dataset.price ? Number(opt.dataset.price) : 0;
-      priceSummaryEl.textContent = `Price: ${formatPrice(p)}`;
-    }
-    if(packageSelect){ packageSelect.addEventListener('change', updatePriceSummary); updatePriceSummary(); }
+// Animate cards on load
+window.addEventListener('load', () => {
+  const cards = document.querySelectorAll('.card');
+  cards.forEach((card, index) => {
+    setTimeout(() => {
+      card.classList.add('show');
+    }, index * 100);
+  });
+});
 
-    // Theme toggle (dark/light)
-    const themeToggle = document.getElementById('themeToggle');
-    const THEME_KEY = 'sbf_theme';
-    function applyTheme(t){
-      if(t === 'light'){ document.documentElement.classList.add('light-theme'); themeToggle.textContent = '☼'; themeToggle.setAttribute('aria-pressed','true'); }
-      else { document.documentElement.classList.remove('light-theme'); themeToggle.textContent = '☾'; themeToggle.setAttribute('aria-pressed','false'); }
-    }
-    let saved = localStorage.getItem(THEME_KEY);
-    if(!saved){ saved = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark'; }
-    applyTheme(saved);
-    if(themeToggle){ themeToggle.addEventListener('click', ()=>{ const next = document.documentElement.classList.contains('light-theme') ? 'dark' : 'light'; localStorage.setItem(THEME_KEY, next); applyTheme(next); }) }
+// === BOOKING FORM FUNCTIONALITY ===
+const bookingForm = document.getElementById('bikeBookingForm');
+const statusEl = document.getElementById('bookingStatus');
+const BOOKING_KEY = 'transahel_bookings_v1';
+const PHONE = '2348035901765';
 
-    // Lightbox gallery
-    (function(){
-      const imgs = Array.from(document.querySelectorAll('#gallery img'));
-      if(!imgs.length) return;
-      const lb = document.getElementById('lightbox');
-      const lbImg = document.getElementById('lbImage');
-      const lbClose = document.getElementById('lbClose');
-      const lbPrev = document.getElementById('lbPrev');
-      const lbNext = document.getElementById('lbNext');
-      const lbOpenOrig = document.getElementById('lbOpenOrig');
-      let idx = 0;
-      function openAt(i){ idx = (i+imgs.length) % imgs.length; lbImg.src = imgs[idx].src; lbImg.alt = imgs[idx].alt || '';
-        lb.classList.remove('hidden'); lb.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; }
-      function close(){ lb.classList.add('hidden'); lb.setAttribute('aria-hidden','true'); document.body.style.overflow=''; lbImg.classList.remove('zoomed'); }
-      function prev(){ openAt(idx-1); }
-      function next(){ openAt(idx+1); }
-      imgs.forEach((im,i)=> im.addEventListener('click', ()=> openAt(i)));
-      lbClose && lbClose.addEventListener('click', close);
-      lbPrev && lbPrev.addEventListener('click', prev);
-      lbNext && lbNext.addEventListener('click', next);
-      lb && lb.addEventListener('click', (e)=>{ if(e.target === lb) close(); });
-      // keyboard
-      document.addEventListener('keydown', (e)=>{ if(lb && !lb.classList.contains('hidden')){ if(e.key === 'Escape') close(); if(e.key === 'ArrowLeft') prev(); if(e.key === 'ArrowRight') next(); } });
-      // open original in new tab
-      if(lbOpenOrig){ lbOpenOrig.addEventListener('click', ()=>{ window.open(imgs[idx].src, '_blank'); }); }
-      // toggle zoom
-      lbImg && lbImg.addEventListener('click', ()=>{ lbImg.classList.toggle('zoomed'); if(lbImg.classList.contains('zoomed')){ lbImg.style.cursor='zoom-out'; } else { lbImg.style.cursor='zoom-in'; } });
-    })();
+function showStatus(message, type = 'success') {
+  statusEl.textContent = message;
+  statusEl.className = 'form-status show ' + type;
+  setTimeout(() => {
+    statusEl.classList.remove('show');
+  }, 4000);
+}
 
-  </script>
+function collectFormData() {
+  return {
+    name: document.getElementById('custName').value.trim(),
+    email: document.getElementById('custEmail').value.trim(),
+    phone: document.getElementById('custPhone').value.trim(),
+    date: document.getElementById('bookDate').value,
+    time: document.getElementById('bookTime').value,
+    bikeType: document.getElementById('bikeType').value,
+    message: document.getElementById('custMessage').value.trim(),
+    createdAt: new Date().toISOString()
+  };
+}
+
+function saveBookingLocal(data) {
+  try {
+    const bookings = JSON.parse(localStorage.getItem(BOOKING_KEY) || '[]');
+    bookings.unshift(data);
+    localStorage.setItem(BOOKING_KEY, JSON.stringify(bookings));
+  } catch (e) {
+    console.error('Error saving booking:', e);
+  }
+}
+
+document.getElementById('saveFormLocal').addEventListener('click', () => {
+  if (!bookingForm.checkValidity()) {
+    bookingForm.reportValidity();
+    showStatus('Please fill all required fields.', 'error');
+    return;
+  }
+  const data = collectFormData();
+  saveBookingLocal(data);
+  showStatus('✓ Booking saved locally!', 'success');
+  bookingForm.reset();
+});
+
+bookingForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  if (!bookingForm.checkValidity()) {
+    bookingForm.reportValidity();
+    showStatus('Please fill all required fields.', 'error');
+    return;
+  }
+
+  const data = collectFormData();
+  saveBookingLocal(data);
+
+  // Send WhatsApp message
+  const waMessage = encodeURIComponent(
+    `New E-Bike Booking\n\n` +
+    `Name: ${data.name}\n` +
+    `Email: ${data.email}\n` +
+    `Phone: ${data.phone}\n` +
+    `Bike Type: ${data.bikeType}\n` +
+    `Date: ${data.date}\n` +
+    `Time: ${data.time}\n` +
+    `Notes: ${data.message || 'None'}`
+  );
+
+  const waUrl = `https://wa.me/${PHONE}?text=${waMessage}`;
+  window.open(waUrl, '_blank');
+
+  showStatus('✓ Booking saved! Opening WhatsApp to confirm...', 'success');
+  bookingForm.reset();
+});
+</script>
+
+</body>
 </html>
